@@ -1,0 +1,24 @@
+{
+  "name": "lunacatapi",
+  "version": "1.0.0",
+  "description": "image api to fetch cat images",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caevee/lunacatapi.git"
+  },
+  "author": "caevee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/caevee/lunacatapi/issues"
+  },
+  "homepage": "https://github.com/caevee/lunacatapi#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.10.0",
+    "zero-fill": "^2.2.4"
+  }
+}
