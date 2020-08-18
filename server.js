@@ -1,29 +1,38 @@
 const express = require("express");
-const zero_fill = require("zero-fill");
-const fs = require("fs");
+const mongoose = require("mongoose");
 const app = express();
+const MONGOSECRET =
+  process.env.MONGOSECRET || require(`${__dirname}/secrets.js`).MONGOSECRET;
 const PORT = process.env.PORT || 3000;
 
+mongoose.connect(
+  `mongodb+srv://admin:${MONGOSECRET}@images.pdyfe.mongodb.net/cats?retryWrites=true&w=majority`,
+  { useNewUrlParser: true, useUnifiedTopology: true }
+);
+const Cat = mongoose.model("Cat", { path: String, cat: String }, "images");
+
 app.get("/", (req, res) => {
-  res.send("Lunacat API. Use the /random endpoint.");
+  res.send("Lunacat API. Use the /cat endpoint.");
 });
 
-app.get("/random", (req, res) => {
-  const paddedNum = getPaddedNum();
-  console.log(paddedNum);
-  res.sendFile(`${__dirname}/images/p${paddedNum}.jpg`);
+app.get("/cat", (req, res) => {
+  if (!req.query.cat) {
+    Cat.find({}, (err, results) => {
+      if (err) console.log(err);
+      const randomDocument =
+        results[Math.floor(Math.random() * results.length)];
+      res.sendFile(`${__dirname}/images/${randomDocument.path}`);
+    });
+  } else {
+    Cat.find({ cat: req.query.cat }, (err, results) => {
+      if (err) console.log(err);
+      const randomDocument =
+        results[Math.floor(Math.random() * results.length)];
+      res.sendFile(`${__dirname}/images/${randomDocument.path}`);
+    });
+  }
 });
 
 app.listen(PORT, () => {
   console.log("Server running on " + PORT);
 });
-
-const getRandomNum = (range) => {
-  return Math.floor(Math.random() * range + 1);
-};
-
-const getPaddedNum = () => {
-  const range = fs.readdirSync("./images").length;
-  const randomNum = getRandomNum(range);
-  return zero_fill(4, randomNum);
-};
