@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const MONGOSECRET =
-  process.env.MONGOSECRET || require(`${__dirname}/secrets.js`).MONGOSECRET;
+  process.env.MONGOSECRET;
 const PORT = process.env.PORT || 3000;
 
 mongoose.connect(
