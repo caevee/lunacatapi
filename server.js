@@ -1,8 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const MONGOSECRET =
-  process.env.MONGOSECRET;
+const MONGOSECRET = process.env.MONGOSECRET;
 const PORT = process.env.PORT || 3000;
 
 mongoose.connect(
@@ -21,14 +20,14 @@ app.get("/cat", (req, res) => {
       if (err) console.log(err);
       const randomDocument =
         results[Math.floor(Math.random() * results.length)];
-      res.sendFile(`${__dirname}/images/${randomDocument.path}`);
+      res.send(randomDocument.path);
     });
   } else {
     Cat.find({ cat: req.query.cat }, (err, results) => {
       if (err) console.log(err);
       const randomDocument =
         results[Math.floor(Math.random() * results.length)];
-      res.sendFile(`${__dirname}/images/${randomDocument.path}`);
+      res.send(randomDocument.path);
     });
   }
 });
